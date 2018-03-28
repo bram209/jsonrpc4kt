@@ -5,5 +5,7 @@ allprojects {
 }
 
 subprojects {
+    apply plugin: 'maven'
+
     version = '1.0'
 }
