@@ -54,7 +54,7 @@ object DefaultConverter : Converter {
         }
 
 
-        throw Exception("The default converter can only convert to Json types in the ${JsonValue::class.java.packageName}")
+        throw Exception("The default converter can only convert to Json types in the ${JsonValue::class.java.`package`.name} package.")
     }
 
     override fun serialize(input: Any): String {
