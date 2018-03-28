@@ -1,0 +1,6 @@
+rootProject.name = 'jsonrpc4kt'
+
+include 'jsonrpc4kt-core'
+include 'jsonrpc4kt-service'
+include 'jsonrpc4kt-jackson'
+include 'jsonrpc4kt-gson'

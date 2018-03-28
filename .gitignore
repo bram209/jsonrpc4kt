@@ -1,0 +1,10 @@
+.DS_Store
+.idea/shelf
+out/
+*.versionsBackup
+.gradle/
+build/
+!**/src/**/build
+!**/test/**/build
+*.iml
+.idea/
