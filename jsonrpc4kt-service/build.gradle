@@ -16,6 +16,8 @@ repositories {
 }
 
 dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile project(":jsonrpc4kt-core")
 }
 
 compileKotlin {

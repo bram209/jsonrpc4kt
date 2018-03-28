@@ -7,12 +7,14 @@ fun jsonRpcClient(host: String, port: Int, init: JsonRpcClient.() -> Unit): Json
 }
 
 
-fun JsonRpcClient.authentication(init: Authentication.() -> Unit): Authentication {
-    authentication.init()
-    return authentication
+fun JsonRpcClient.authentication(init: Authentication.() -> AuthMode): Authentication {
+    auth.authMode = auth.init()
+    return auth
 }
 
-fun JsonRpcClient.convertion(init: Conversion.() -> Unit): Conversion {
-    convertion.init()
-    return convertion
+fun JsonRpcClient.conversion(init: Conversion.() -> Converter): Conversion {
+    conv.converter = conv.init()
+    return conv
 }
+
+fun Authentication.basicAuth(username: String, password: String) = BasicAuth(username, password)

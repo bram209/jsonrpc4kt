@@ -7,13 +7,13 @@ import com.eclipsesource.json.JsonValue
 import java.io.*
 
 class Conversion {
-    private var converter: Converter = DefaultConverter
+    internal var converter: Converter = DefaultConverter
 
     internal fun <T> convertToResult(input: ByteArray, returnType: Class<T>): RpcResult<T> {
         val jsonObject = Json.parse(String(input)).asObject()
         if (!jsonObject["error"].isNull) {
             val errorNode = jsonObject["error"].asObject()
-            return RpcResult(null, Error(errorNode["errorCode"].asInt(), errorNode["message"].asString()))
+            return RpcResult(null, RpcError(errorNode["code"].asInt(), errorNode["message"].asString()))
         }
 
         val resultNode = jsonObject["result"]
@@ -48,23 +48,24 @@ object DefaultConverter : Converter {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> deserialize(input: String, returnType: Class<T>): T? {
-        if (returnType.isAssignableFrom(JsonValue::class.java)) {
+        if (JsonValue::class.java.isAssignableFrom(returnType)) {
             val jsonValue = Json.parse(input)
             return jsonValue as T
         }
 
-        TODO ("throw exception (the default converter only supports....")
+
+        throw Exception("The default converter can only convert to Json types in the ${JsonValue::class.java.packageName}")
     }
 
     override fun serialize(input: Any): String {
-        val jsonValue = _serialize(input)
+        val jsonValue = serializeToJsonValue(input)
         return jsonValue.toString()
     }
 
-    private fun _serialize(input: Any): JsonValue? = when (input) {
+    private fun serializeToJsonValue(input: Any): JsonValue? = when (input) {
         is Array<*> -> {
             val array = JsonArray()
-            for (elem in input) array.add(_serialize(elem!!))
+            for (elem in input) array.add(serializeToJsonValue(elem!!))
             array
         }
         is Int -> Json.value(input)
