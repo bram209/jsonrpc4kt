@@ -3,6 +3,8 @@ package com.github.bram209.jsonrpc4kt.core
 import com.eclipsesource.json.JsonObject
 import com.github.kittinunf.fuel.httpPost
 
+class RpcCallException(rpcError: RpcError): Exception(rpcError.toString())
+
 internal data class RpcCall(val method: String, val params: Array<out Any>, val id: Int?) {
     val jsonrpc = "2.0"
 }
@@ -45,7 +47,7 @@ class JsonRpcClient(host: String, port: Int) {
                 return rpcResult.get()
             }
 
-            TODO("Handle error ${rpcResult.error!!.message}")
+            throw RpcCallException(rpcResult.error!!)
         }
 
         throw Exception(error!!.message)
